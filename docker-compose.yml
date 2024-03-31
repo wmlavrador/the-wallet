@@ -1,0 +1,67 @@
+version: "3.7"
+services:
+
+  app_the_wallet:
+    build:
+      context: infra
+      dockerfile: dockerfiles/app.dockerfile
+    container_name: app_thewallet
+    restart: unless-stopped
+    working_dir: /var/www/
+#    env_file:
+#      - application/.env
+    volumes:
+      - ./application:/var/www/
+      - ./application/supervisor/conf.d:/etc/supervisor/conf.d
+    networks:
+      - network_thewallet
+
+  db_the_wallet:
+    image: mysql:8.0
+    container_name: db_the_wallet
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PORT: ${DB_PORT}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./infra/mysql_data:/var/lib/mysql
+    networks:
+      - network_thewallet
+
+  nginx_the_wallet:
+    image: nginx:1.20-alpine
+    container_name: nginx_the_wallet
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    volumes:
+      - ./application:/var/www
+      - ./infra/nginx:/etc/nginx/templates
+    networks:
+      - network_thewallet
+
+  redis_the_wallet:
+    image: redis
+    container_name: redis_the_wallet
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ./infra/redis_data:/data
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    networks:
+      - network_thewallet
+
+networks:
+  network_thewallet:
+    driver: bridge
