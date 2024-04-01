@@ -4,8 +4,6 @@ namespace TheWallet\Transactions\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Http\Requests\TransactionStore;
 use TheWallet\Transactions\UseCases\CreateTransactionUseCase;
 
