@@ -4,16 +4,16 @@ namespace Tests\Unit\Transactions\UseCases;
 
 use Tests\TestCase;
 use TheWallet\Transactions\Repository\TransactionRepository;
-use TheWallet\Transactions\UseCases\TransferTransactionUseCase;
+use TheWallet\Transactions\UseCases\CreateTransactionUseCase;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Wallets\Repository\WalletRepository;
 use TheWallet\Wallets\Wallet;
 
-class TransferTransactionUseCaseTest extends TestCase
+class CreateTransactionUseCaseTest extends TestCase
 {
     private TransactionRepository $transactionRepositoryMock;
     private WalletRepository $walletRepositoryMock;
-    private TransferTransactionUseCase $transactionUseCaseMock;
+    private CreateTransactionUseCase $transactionUseCaseMock;
 
     public function setUp(): void
     {
@@ -22,7 +22,7 @@ class TransferTransactionUseCaseTest extends TestCase
         $this->transactionRepositoryMock = $this->createMock(TransactionRepository::class);
         $this->walletRepositoryMock = $this->createMock(WalletRepository::class);
 
-        $this->transactionUseCaseMock = new TransferTransactionUseCase(
+        $this->transactionUseCaseMock = new CreateTransactionUseCase(
             $this->transactionRepositoryMock,
             $this->walletRepositoryMock
         );

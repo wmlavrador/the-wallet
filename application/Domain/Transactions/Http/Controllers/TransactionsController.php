@@ -7,12 +7,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Http\Requests\TransactionStore;
-use TheWallet\Transactions\UseCases\TransferTransactionUseCase;
+use TheWallet\Transactions\UseCases\CreateTransactionUseCase;
 
 class TransactionsController extends Controller
 {
     public function __construct(
-        private readonly TransferTransactionUseCase $transactionUseCase
+        private readonly CreateTransactionUseCase $transactionUseCase
     ){}
 
     public function store(TransactionStore $request): JsonResponse

@@ -9,7 +9,7 @@ use TheWallet\Users\Enum\UserTypeEnum;
 use TheWallet\Wallets\Repository\WalletRepository;
 use TheWallet\Wallets\Wallet;
 
-class TransferTransactionUseCase
+class CreateTransactionUseCase
 {
     public function __construct(
         private readonly TransactionRepository $transactionRepository,
