@@ -3,7 +3,6 @@
 namespace TheWallet\Transactions\UseCases;
 
 use Illuminate\Support\Facades\DB;
-use TheWallet\PaymentsAuthorizer\PaymentAuthorizerFactory;
 use TheWallet\PaymentsAuthorizer\PaymentsAuthorizerContract;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Repository\TransactionRepository;
@@ -41,22 +40,25 @@ class CreateTransactionUseCase
         });
     }
 
+    /**
+     * @throws TransactionException
+     */
     private function validateTransferRules(Wallet $walletSender, TransactionData $transactionData): void
     {
         if ($walletSender->user && $walletSender->user->user_type === UserTypeEnum::Company->value) {
-            throw new \Exception('Seu perfil é de Empresa por enquanto não é permitido enviar valores.');
+            throw TransactionException::companiesCannotTransfer();
         }
 
         if ($transactionData->value <= 0) {
-            throw new \Exception('Transação não permitida');
+            throw TransactionException::negativeValuesNotAllowed();
         }
 
         if (!$walletSender->hasBalance($transactionData->value)) {
-            throw new \Exception('Você não possui saldo para realizar a transferência.');
+            throw TransactionException::hasNoBalance();
         }
 
         if ($walletSender->getKey() === $transactionData->receiver) {
-            throw new \Exception('Você não pode enviar fundos para sua própria carteira.');
+            throw TransactionException::matchingWalletsNotAllowed();
         }
     }
 }
