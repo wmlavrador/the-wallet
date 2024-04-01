@@ -3,6 +3,7 @@
 namespace Tests\Unit\Transactions\UseCases;
 
 use Tests\TestCase;
+use TheWallet\PaymentsAuthorizer\PaymentsAuthorizerContract;
 use TheWallet\Transactions\Repository\TransactionRepository;
 use TheWallet\Transactions\UseCases\CreateTransactionUseCase;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
@@ -13,6 +14,7 @@ class CreateTransactionUseCaseTest extends TestCase
 {
     private TransactionRepository $transactionRepositoryMock;
     private WalletRepository $walletRepositoryMock;
+    private PaymentsAuthorizerContract $paymentAuthorizerMock;
     private CreateTransactionUseCase $transactionUseCaseMock;
 
     public function setUp(): void
@@ -21,10 +23,12 @@ class CreateTransactionUseCaseTest extends TestCase
 
         $this->transactionRepositoryMock = $this->createMock(TransactionRepository::class);
         $this->walletRepositoryMock = $this->createMock(WalletRepository::class);
+        $this->paymentAuthorizerMock = $this->createMock(PaymentsAuthorizerContract::class);
 
         $this->transactionUseCaseMock = new CreateTransactionUseCase(
             $this->transactionRepositoryMock,
-            $this->walletRepositoryMock
+            $this->walletRepositoryMock,
+            $this->paymentAuthorizerMock
         );
     }
 
@@ -32,6 +36,9 @@ class CreateTransactionUseCaseTest extends TestCase
     {
         $this->transactionRepositoryMock->expects($this->once())
             ->method('createTransaction');
+
+        $this->paymentAuthorizerMock->method('isAuthorizerPayment')
+            ->willReturn(true);
 
         $this->walletRepositoryMock->method('getWalletById')
             ->willReturn((new Wallet()));
