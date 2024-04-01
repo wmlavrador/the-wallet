@@ -2,3 +2,4 @@
 infra/mysql_data
 infra/redis_data
 .idea
+application/.editorconfig
