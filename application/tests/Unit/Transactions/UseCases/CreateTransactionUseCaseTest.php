@@ -32,7 +32,7 @@ class CreateTransactionUseCaseTest extends TestCase
         );
     }
 
-    public function testTransferTransaction()
+    public function testCreateTransaction()
     {
         $this->transactionRepositoryMock->expects($this->once())
             ->method('createTransaction');
