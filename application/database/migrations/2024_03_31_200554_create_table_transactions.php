@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('sender')->constrained('wallets');
+            $table->foreignUuid('receiver')->constrained('wallets');
+            $table->integer('value');
+            $table->string('situation');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('transactions', function(Blueprint $table){
+            $table->dropConstrainedForeignId('sender');
+            $table->dropConstrainedForeignId('receiver');
+        });
+        Schema::dropIfExists('transactions');
+    }
+};
