@@ -2,7 +2,9 @@
 
 namespace TheWallet\Transactions\UseCases;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
+use TheWallet\Jobs\NotificationsQueue;
 use TheWallet\PaymentsAuthorizer\PaymentsAuthorizerContract;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Repository\TransactionRepository;
@@ -20,24 +22,17 @@ class CreateTransactionUseCase
     ){}
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function handle(TransactionData $transactionData): void
+    public function handle(TransactionData $transactionData): TransactionData
     {
         $walletSender = $this->walletRepository->getWalletById($transactionData->sender);
         $this->validateTransferRules($walletSender, $transactionData);
 
-        DB::transaction(function() use ($transactionData, $walletSender) {
-            if (!$this->paymentsAuthorizer->isAuthorizerPayment()) {
-                throw TransactionException::transactionNotAllowedByThirdy();
-            }
+        $this->makeTransferBetweebWallets($transactionData, $walletSender);
+        $this->notifyTransactionCreated();
 
-            $this->transactionRepository->createTransaction($transactionData);
-            $walletReceiver = $this->walletRepository->getWalletById($transactionData->receiver);
-
-            $this->walletRepository->decreaseBalance($walletSender, $transactionData->value);
-            $this->walletRepository->increaseBalance($walletReceiver, $transactionData->value);
-        });
+        return $transactionData;
     }
 
     /**
@@ -45,7 +40,7 @@ class CreateTransactionUseCase
      */
     private function validateTransferRules(Wallet $walletSender, TransactionData $transactionData): void
     {
-        if ($walletSender->user && $walletSender->user->user_type === UserTypeEnum::Company->value) {
+        if ($walletSender->user->user_type === UserTypeEnum::Company->value) {
             throw TransactionException::companiesCannotTransfer();
         }
 
@@ -60,5 +55,25 @@ class CreateTransactionUseCase
         if ($walletSender->getKey() === $transactionData->receiver) {
             throw TransactionException::matchingWalletsNotAllowed();
         }
+    }
+
+    private function makeTransferBetweebWallets(TransactionData $transactionData, Wallet $walletSender): void
+    {
+        DB::transaction(function() use ($transactionData, $walletSender) {
+            if (!$this->paymentsAuthorizer->isAuthorizerPayment()) {
+                throw TransactionException::transactionNotAllowedByThirdy();
+            }
+
+            $this->transactionRepository->createTransaction($transactionData);
+            $walletReceiver = $this->walletRepository->getWalletById($transactionData->receiver);
+
+            $this->walletRepository->decreaseBalance($walletSender, $transactionData->value);
+            $this->walletRepository->increaseBalance($walletReceiver, $transactionData->value);
+        });
+    }
+
+    private function notifyTransactionCreated(): void
+    {
+        //NotificationsQueue::dispatch('Transaction Created with Successfuly');
     }
 }
