@@ -35,7 +35,7 @@ class Wallet extends Model
 
     public function hasBalance(int $decreaseValue): bool
     {
-        return $this->balance < $decreaseValue;
+        return ($this->balance > $decreaseValue);
     }
 
     public function wasSent(): HasMany
