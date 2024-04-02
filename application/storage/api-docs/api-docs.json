@@ -14,7 +14,6 @@
             "post": {
                 "summary": "Create Transaction",
                 "description": "Create Transaction between wallets",
-                "operationId": "67fb0ca8783970feae9811a88784dfdc",
                 "parameters": [
                     {
                         "name": "value",
@@ -120,6 +119,108 @@
                     }
                 }
             }
+        },
+        "/api/my-transactions": {
+            "post": {
+                "summary": "Get Transactions",
+                "description": "Get All Transactions Related Between Wallets",
+                "parameters": [
+                    {
+                        "name": "sender",
+                        "in": "path",
+                        "description": "The Wallet Sender ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    },
+                    {
+                        "name": "receiver",
+                        "in": "path",
+                        "description": "The Wallet Receiver ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sender": {
+                                        "type": "string"
+                                    },
+                                    "receiver": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "sender": "367adaf7-b3ac-35b1-9e0e-41240ca748e0",
+                                    "receiver": "20dac917-095b-3ca0-a8dc-cc38446112f2"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfuly Operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": [
+                                        {
+                                            "id": "9bb5155b-c209-489f-add8-f8fec3611cde",
+                                            "sender": "367adaf7-b3ac-35b1-9e0e-41240ca748e0",
+                                            "receiver": "20dac917-095b-3ca0-a8dc-cc38446112f2",
+                                            "receiverDetails": {
+                                                "id": "75138558-d78f-301b-a2ab-8554777ed3ec",
+                                                "name": "Fletcher Schroeder",
+                                                "email": "shaylee.kuhlman@example.net",
+                                                "userType": "company"
+                                            },
+                                            "value": 5,
+                                            "situation": "awaiting"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "The sender field is required.",
+                                        "errors": {
+                                            "sender": [
+                                                "The sender field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -152,6 +253,23 @@
                             "Completed",
                             "Cancelled"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "WalletsTransactionData": {
+                "title": "WalletsTransactionData",
+                "description": "Transactions Related between Wallets",
+                "properties": {
+                    "sender": {
+                        "description": "The Wallet Sender ID",
+                        "type": "string",
+                        "example": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                    },
+                    "receiver": {
+                        "description": "The Wallet Receiver ID",
+                        "type": "string",
+                        "example": "0006faf6-7a61-426c-9034-579f2cfcfa83"
                     }
                 },
                 "type": "object"
