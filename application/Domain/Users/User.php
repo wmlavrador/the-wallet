@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use TheWallet\Users\Enum\UserTypeEnum;
+use TheWallet\Wallets\Wallet;
 
 class User extends Authenticatable
 {
@@ -42,6 +43,6 @@ class User extends Authenticatable
 
     public function wallet(): HasOne
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(Wallet::class);
     }
 }
