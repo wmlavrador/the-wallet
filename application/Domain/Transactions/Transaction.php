@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use TheWallet\Users\User;
+use TheWallet\Wallets\Wallet;
 
 class Transaction extends Model
 {
@@ -28,13 +28,13 @@ class Transaction extends Model
         return TransactionFactory::new();
     }
 
-    public function userSender(): HasOne
+    public function walletSender(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'sender');
+        return $this->hasOne(Wallet::class, 'id', 'sender');
     }
 
-    public function userReceiver(): HasOne
+    public function walletReceiver(): HasOne
     {
-        return $this->hasOne(User::class, 'id', 'receiver');
+        return $this->hasOne(Wallet::class,'id', 'receiver');
     }
 }
