@@ -27,7 +27,7 @@ class TransactionRepository
     {
         return $this->model->with('walletReceiver.user')
             ->where('sender', $walletsTransactionData->sender)
-            ->orWhere('receiver', $walletsTransactionData->receiver)
+            ->where('receiver', $walletsTransactionData->receiver)
             ->get();
     }
 }
