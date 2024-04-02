@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use TheWallet\Users\User;
+use TheWallet\Wallets\Wallet;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+         User::factory(10)->create();
+         Wallet::factory(10)->create();
     }
 }
