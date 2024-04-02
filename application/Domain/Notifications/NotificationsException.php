@@ -10,4 +10,9 @@ class NotificationsException extends Exception
     {
         return new self('Notification service is not implemented.');
     }
+
+    public static function notificationNotSent(): self
+    {
+        return new self('Notification service not responding, tray again.');
+    }
 }
