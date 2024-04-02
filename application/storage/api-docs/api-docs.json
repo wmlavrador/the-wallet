@@ -1,0 +1,183 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "TheWallet - Api Documentation",
+        "version": "1.0",
+        "termsOfService": "https://github.com/wmlavrador/the-wallet/blob/master/LICENSE.md",
+        "contact": {
+            "name": "Wilson Lavrador",
+            "email": "wilsonmlavrador@gmail.com"
+        }
+    },
+    "paths": {
+        "/api/transactions": {
+            "post": {
+                "summary": "Create Transaction",
+                "description": "Create Transaction between wallets",
+                "operationId": "67fb0ca8783970feae9811a88784dfdc",
+                "parameters": [
+                    {
+                        "name": "value",
+                        "in": "path",
+                        "description": "Value of transfer between wallets",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1000"
+                            }
+                        }
+                    },
+                    {
+                        "name": "sender",
+                        "in": "path",
+                        "description": "The Wallet Sender ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    },
+                    {
+                        "name": "receiver",
+                        "in": "path",
+                        "description": "The Wallet Receiver ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "value": {
+                                        "type": "integer"
+                                    },
+                                    "sender": {
+                                        "type": "string"
+                                    },
+                                    "receiver": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "value": 140,
+                                    "sender": "367adaf7-b3ac-35b1-9e0e-41240ca748e0",
+                                    "receiver": "20dac917-095b-3ca0-a8dc-cc38446112f2"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfuly Operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "success": true,
+                                        "message": "Transaction Created with Successfuly"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "The sender field is required.",
+                                        "errors": {
+                                            "sender": [
+                                                "The sender field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TransactionData": {
+                "title": "TransactionData",
+                "description": "Transaction data transfer object",
+                "properties": {
+                    "value": {
+                        "description": "Transaction value",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "sender": {
+                        "description": "The Wallet Sender ID",
+                        "type": "string",
+                        "example": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                    },
+                    "receiver": {
+                        "description": "The Wallet Receiver ID",
+                        "type": "string",
+                        "example": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                    },
+                    "situation": {
+                        "description": "Transaction situation",
+                        "type": "string",
+                        "default": "Awaiting",
+                        "enum": [
+                            "Awaiting",
+                            "Completed",
+                            "Cancelled"
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "parameters": {
+            "AcceptHeader": {
+                "name": "Accept",
+                "in": "header",
+                "description": "Content Type Accept",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "default": "application/json"
+                }
+            },
+            "ContentTypeHeader": {
+                "name": "Content-type",
+                "in": "header",
+                "description": "Content Type Requested",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "default": "application/json"
+                }
+            }
+        }
+    }
+}

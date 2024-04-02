@@ -73,11 +73,11 @@ php artisan migrate --seed
 🚀 Congrats bro
 
 ## ☕ Usando the-wallet
-After following the steps above, your application is ready to use,
-Below is the API documentation
+
+When running your application, you will be able to view the Swagger documentation at the address
 
 ```
-http://localhost/swagger
+http://localhost/api/documentation
 ```
 
 ## 😄 Be one of the contributors
