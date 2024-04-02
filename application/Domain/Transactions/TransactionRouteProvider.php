@@ -11,6 +11,7 @@ class TransactionRouteProvider extends RouteServiceProvider
     public function map(): void
     {
         Route::prefix('api')->controller(TransactionsController::class)->group(function(){
+            Route::post('my-transactions', 'index')->name('transactions.index');
             Route::post('transactions', 'store')->name('transactions.store');
         });
     }

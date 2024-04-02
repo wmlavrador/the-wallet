@@ -4,6 +4,7 @@ namespace TheWallet\Transactions\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
+use TheWallet\Transactions\DataTransferObject\WalletsTransactionData;
 use TheWallet\Transactions\Transaction;
 
 class TransactionRepository
@@ -22,10 +23,11 @@ class TransactionRepository
         ]);
     }
 
-    public function getTransactions(int $walletSender, int $walletReceiver): Collection
+    public function getTransactions(WalletsTransactionData $walletsTransactionData): Collection
     {
-        return $this->model->where('sender', $walletSender)
-            ->orWhere('receiver', $walletReceiver)
+        return $this->model->with('walletReceiver.user')
+            ->where('sender', $walletsTransactionData->sender)
+            ->orWhere('receiver', $walletsTransactionData->receiver)
             ->get();
     }
 }
