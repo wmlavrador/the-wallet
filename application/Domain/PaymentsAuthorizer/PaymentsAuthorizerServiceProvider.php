@@ -12,7 +12,7 @@ class PaymentsAuthorizerServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(PaymentsAuthorizerContract::class, function($app){
-            $authorizer = $app['config']['payments_authorizer.default'];
+            $authorizer = $app['config']['services.payments_authorizer.default'];
 
             return match ($authorizer) {
                 PaymentsAuthorizerImplementedEnum::Alelo->value => new AleloClient(),
