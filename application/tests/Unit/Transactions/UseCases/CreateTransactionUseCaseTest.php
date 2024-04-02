@@ -3,12 +3,12 @@
 namespace Tests\Unit\Transactions\UseCases;
 
 use Tests\TestCase;
-use TheWallet\Jobs\NotificationsQueue;
+use TheWallet\Notifications\Jobs\NotificationsQueue;
 use TheWallet\PaymentsAuthorizer\PaymentsAuthorizerContract;
+use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Repository\TransactionRepository;
 use TheWallet\Transactions\TransactionException;
 use TheWallet\Transactions\UseCases\CreateTransactionUseCase;
-use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Users\Enum\UserTypeEnum;
 use TheWallet\Wallets\Repository\WalletRepository;
 use TheWallet\Wallets\Wallet;

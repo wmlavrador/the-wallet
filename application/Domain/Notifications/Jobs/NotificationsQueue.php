@@ -1,6 +1,6 @@
 <?php
 
-namespace TheWallet\Jobs;
+namespace TheWallet\Notifications\Jobs;
 
 use Exception;
 use Illuminate\Bus\Queueable;

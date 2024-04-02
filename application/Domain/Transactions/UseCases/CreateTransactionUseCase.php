@@ -4,7 +4,6 @@ namespace TheWallet\Transactions\UseCases;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use TheWallet\Jobs\NotificationsQueue;
 use TheWallet\PaymentsAuthorizer\PaymentsAuthorizerContract;
 use TheWallet\Transactions\DataTransferObject\TransactionData;
 use TheWallet\Transactions\Repository\TransactionRepository;

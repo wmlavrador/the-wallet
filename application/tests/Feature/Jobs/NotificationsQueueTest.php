@@ -2,10 +2,9 @@
 
 namespace Jobs;
 
-use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
-use TheWallet\Jobs\NotificationsQueue;
+use TheWallet\Notifications\Jobs\NotificationsQueue;
 use TheWallet\Notifications\NotificationContract;
 use TheWallet\Notifications\NotificationsException;
 
